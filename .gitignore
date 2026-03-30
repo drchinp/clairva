@@ -1,0 +1,22 @@
+# Node
+frontend/node_modules/
+frontend/.next/
+
+# Python
+backend/.venv/
+__pycache__/
+*.pyc
+
+# IDE
+.idea/
+
+# Logs
+logs/
+
+# Env
+.env
+.DS_Store
+
+# Data (optional)
+rag_files/
+data/
