@@ -136,7 +136,7 @@ export default function DataTable<T>({
       )}
 
       {/* TABLE HEADER */}
-      <div className="grid grid-cols-[40px_repeat(auto-fit,minmax(0,1fr))] px-6 py-3 text-xs text-gray-400 border-b border-gray-100 bg-gray-50 sticky top-0 z-10">
+      <div className="grid grid-cols-[60px_repeat(7,minmax(0,1fr))_40px] px-6 py-3 text-xs text-gray-400 border-b border-gray-100 bg-gray-50 sticky top-0 z-10">
 
         {/* SELECT ALL */}
         <div>
@@ -175,7 +175,7 @@ export default function DataTable<T>({
           return (
             <div
               key={rowId}
-              className="grid grid-cols-[40px_repeat(auto-fit,minmax(0,1fr))] px-6 py-4 items-center border-b border-gray-100 hover:bg-gray-50/60 transition cursor-pointer"
+              className="grid grid-cols-[60px_repeat(7,minmax(0,1fr))_40px] px-6 py-4 items-center border-b border-gray-100 hover:bg-gray-50/60 transition cursor-pointer"
               onClick={() => onRowClick?.(row)}
             >
 

@@ -51,18 +51,43 @@ export default function Header() {
 
   // 🔥 Subtitle logic
   const getSubtitle = () => {
-    if (pathname.startsWith("/agents"))
-      return "Manage and orchestrate AI agents";
-    if (pathname.startsWith("/projects"))
-      return "Track and manage your AI projects";
-    if (pathname.startsWith("/workflows"))
-      return "Design and automate workflows";
-    if (pathname.startsWith("/analytics"))
-      return "Insights and performance metrics";
-    if (pathname.startsWith("/settings"))
-      return "System configuration and preferences";
-    return "Overview of your workspace";
-  };
+  // ================= BUILD =================
+  if (pathname.startsWith("/agents/registry"))
+    return "View and manage all registered agents";
+
+  if (pathname.startsWith("/agents"))
+    return "Manage and orchestrate AI agents";
+
+  if (pathname.startsWith("/tools"))
+    return "Configure and manage system tools";
+
+  if (pathname.startsWith("/knowledge"))
+    return "Manage knowledge sources and embeddings";
+
+  if (pathname.startsWith("/memory"))
+    return "Persistent memory and context management";
+
+  // ================= WORKFLOW =================
+  if (pathname.startsWith("/labeling"))
+    return "Label and prepare data for AI training";
+
+  if (pathname.startsWith("/workflows"))
+    return "Design and automate workflows";
+
+  // ================= PROJECT =================
+  if (pathname.startsWith("/projects"))
+    return "Track and manage your AI projects";
+
+  // ================= INSIGHTS =================
+  if (pathname.startsWith("/analytics"))
+    return "Insights and performance metrics";
+
+  // ================= SETTINGS =================
+  if (pathname.startsWith("/settings"))
+    return "System configuration and preferences";
+
+  return "Overview of your workspace";
+};
 
   const subtitle = getSubtitle();
 

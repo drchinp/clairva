@@ -102,7 +102,7 @@ class RAGEngine:
     # Full RAG Answer
     # ------------------------------------------------
 
-    def answer(self, query: str, agent_id: str = "rag", top_k: int = 5):
+    def answer(self, query: str, agent_id: str = "knowledge", top_k: int = 5):
         """
         Perform full RAG workflow.
         """

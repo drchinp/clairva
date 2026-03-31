@@ -1,23 +1,21 @@
 // ==============================================================
 // File: frontend/components/executions/recent-executions.tsx
-// Purpose: Premium Recent Agent Executions Table (Clairva - Final Clean)
+// Purpose: Recent Agent Executions (Using TransactionTable)
 // ==============================================================
 
 "use client";
 
-import DataTable from "@/components/ui/data-table";
+import TransactionTable from "@/components/ui/transaction-table";
+
 import {
   CheckCircle,
   Clock,
   AlertCircle,
-  Pause,
-  Trash,
 } from "lucide-react";
+
 import type { LucideIcon } from "lucide-react";
 
-// =========================
-// TYPES
-// =========================
+// ================= TYPES =================
 export interface Execution {
   id: string;
   agent: string;
@@ -26,13 +24,10 @@ export interface Execution {
   status: "completed" | "in_progress" | "failed";
   time: string;
 
-  // ✅ required for DataTable generic compatibility
   [key: string]: unknown;
 }
 
-// =========================
-// STATUS CONFIG
-// =========================
+// ================= STATUS CONFIG =================
 const STATUS: Record<
   Execution["status"],
   {
@@ -58,16 +53,14 @@ const STATUS: Record<
   },
 };
 
-// =========================
-// COMPONENT
-// =========================
+// ================= COMPONENT =================
 export default function RecentExecutions({
   data,
 }: {
   data: Execution[];
 }) {
   return (
-    <DataTable<Execution>
+    <TransactionTable
       title="Recent Agent Executions"
 
       action={
@@ -77,86 +70,87 @@ export default function RecentExecutions({
       }
 
       columns={[
-        { key: "agent", label: "Agent", sortable: true },
-        { key: "task", label: "Task Description", sortable: true },
-        { key: "status", label: "Status", sortable: true },
-        { key: "time", label: "Time", sortable: true },
+        { key: "agent", label: "Agent" },
+        { key: "task", label: "Task Description" },
+        { key: "status", label: "Status" },
+        { key: "time", label: "Time" },
       ]}
 
-      data={data}
+      data={data.map((item) => {
+        const s = STATUS[item.status];
+        const Icon = s.icon;
 
-      getRowId={(item) => item.id}
+        return {
+          id: item.id,
 
-      // =========================
-      // BULK ACTIONS
-      // =========================
-      bulkActions={(selected) => (
-        <div className="flex items-center gap-3">
+          cells: [
 
-          <button
-            onClick={() => console.log("Pause selected:", selected)}
-            className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900"
-          >
-            <Pause size={14} /> Pause
-          </button>
-
-          <button
-            onClick={() => console.log("Delete selected:", selected)}
-            className="flex items-center gap-1 text-sm text-red-600 hover:text-red-700"
-          >
-            <Trash size={14} /> Delete
-          </button>
-
-        </div>
-      )}
-
-      // =========================
-      // ROW CLICK
-      // =========================
-      onRowClick={(item) => {
-        console.log("OPEN EXECUTION:", item.id);
-      }}
-
-      // =========================
-      // ROW RENDERER
-      // =========================
-      renderRow={(item) => {
-          const s = STATUS[item.status];
-          const Icon = s.icon;
-
-          return [
-
-            // AGENT
-            <div key={`${item.id}-agent`} className="flex items-center gap-3">
+            // ================= AGENT =================
+            <div
+              key={`${item.id}-agent`}
+              className="flex items-center gap-3 min-w-[200px]"
+            >
               <div className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-xs font-semibold">
                 {item.agentId}
               </div>
-              <div>
-                <p className="text-sm font-medium">{item.agent}</p>
-                <p className="text-xs text-gray-400">{item.agentId}</p>
+
+              <div className="min-w-0">
+                <p className="text-sm font-medium truncate">
+                  {item.agent}
+                </p>
+                <p className="text-xs text-gray-400">
+                  {item.agentId}
+                </p>
               </div>
             </div>,
 
-            // TASK
-            <div key={`${item.id}-task`} className="text-sm text-gray-600">
+            // ================= TASK =================
+            <div
+              key={`${item.id}-task`}
+              className="text-sm text-gray-600 truncate pr-6"
+            >
               {item.task}
             </div>,
 
-            // STATUS
+            // ================= STATUS =================
             <span
               key={`${item.id}-status`}
-              className={`inline-flex items-center gap-1.5 text-xs px-3 py-1 rounded-full ${s.style}`}
+              className={`inline-flex items-center gap-1.5 text-xs px-3 py-1 rounded-full whitespace-nowrap ${s.style}`}
             >
               <Icon size={12} />
               {s.label}
             </span>,
 
-            // TIME
-            <div key={`${item.id}-time`} className="text-sm text-gray-500">
+            // ================= TIME =================
+            <div
+              key={`${item.id}-time`}
+              className="text-sm text-gray-500 whitespace-nowrap"
+            >
               {item.time}
             </div>,
-          ];
-        }}
+          ],
+
+          actions: [
+            {
+              label: "View Logs",
+              onClick: () => console.log("View logs", item.id),
+            },
+            {
+              label: "Pause",
+              onClick: () => console.log("Pause", item.id),
+            },
+            {
+              label: "Delete",
+              onClick: () => console.log("Delete", item.id),
+              danger: true,
+            },
+          ],
+        };
+      })}
+
+      onRowClick={(id) => {
+        console.log("OPEN EXECUTION:", id);
+      }}
     />
   );
 }
